@@ -34,3 +34,30 @@ let products = {
 export function getAll() {
   return { ...products };
 }
+
+export function getById(id) {
+  return { ...products[id] };
+}
+
+export function getByName(name) {
+  return Object.keys(products).find((key) => products[key].name === name);
+}
+
+export function create(category, name, flavour, price, stock, url) {
+  const id = Date.now().toString();
+  const product = {
+    id,
+    category,
+    name,
+    flavour,
+    price,
+    stock,
+    url,
+  };
+  products[id] = product;
+  return product;
+}
+
+export function update() {}
+
+export function remove() {}
