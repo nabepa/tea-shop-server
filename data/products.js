@@ -60,4 +60,6 @@ export function create(category, name, flavour, price, stock, url) {
 
 export function update() {}
 
-export function remove() {}
+export function remove(id) {
+  delete products[id];
+}
