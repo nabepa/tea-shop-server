@@ -58,7 +58,20 @@ export function create(category, name, flavour, price, stock, url) {
   return product;
 }
 
-export function update() {}
+export function update(id, category, name, flavour, price, stock, url) {
+  const prev = { ...products[id] };
+  const updated = {
+    id: prev.id,
+    category: category || prev.category,
+    name: name || prev.name,
+    flavour: flavour || prev.flavour,
+    price: price || prev.price,
+    stock: stock || prev.stock,
+    url: url || prev.url,
+  };
+  products[id] = updated;
+  return updated;
+}
 
 export function remove(id) {
   delete products[id];
