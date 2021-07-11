@@ -4,6 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import { config } from './config.js';
+import { sequelize } from './db/database.js';
 import productsRouter from './router/products.js';
 
 const app = express();
@@ -30,4 +31,6 @@ app.use((error, req, res, next) => {
   res.sendStatus(500);
 });
 
-app.listen(config.db.port);
+sequelize.sync().then((client) => {
+  app.listen(config.db.port);
+});

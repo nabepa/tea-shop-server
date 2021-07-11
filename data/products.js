@@ -1,78 +1,69 @@
-let products = {
-  '00': {
-    id: '00',
-    category: 'green',
-    name: 'sencha',
-    flavour: 'Fresh, delicate Umami touch.',
-    price: 15.55,
-    stock: 3,
-    url: 'https://res.cloudinary.com/dukjzo7tf/image/upload/v1625295884/tea-shop/green-sencha.jpg',
-    // createdAt
+import SQ from 'sequelize';
+import { sequelize } from '../db/database.js';
+const DataTypes = SQ.DataTypes;
+
+const Product = sequelize.define('product', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true,
   },
-
-  '01': {
-    id: '01',
-    category: 'green',
-    name: 'raindrop',
-    flavour: 'Fresh, grassy after rain day.',
-    price: 18.95,
-    stock: 2,
-    url: 'https://res.cloudinary.com/dukjzo7tf/image/upload/v1625293684/tea-shop/green-raindrop.jpg',
+  category: {
+    type: DataTypes.STRING(45),
+    allowNull: false,
   },
-
-  '02': {
-    id: '02',
-    category: 'herbal',
-    name: 'festival',
-    flavour: 'Tosty, sweet and fruity.',
-    price: 12.45,
-    stock: 4,
-    url: 'https://res.cloudinary.com/dukjzo7tf/image/upload/v1625293684/tea-shop/herbal-festival.jpg',
+  name: {
+    type: DataTypes.STRING(45),
+    allowNull: false,
   },
-};
+  price: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  stock: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  flavour: DataTypes.TEXT,
+  url: DataTypes.TEXT,
+});
 
-export function getAll() {
-  return { ...products };
+const ORDER_DESC = { order: [['createdAt', 'DESC']] };
+
+export async function getAll() {
+  return Product.findAll({ ...ORDER_DESC });
 }
 
-export function getById(id) {
-  return { ...products[id] };
+export async function getByName(name) {
+  return Product.findOne({ where: { name } });
 }
 
-export function getByName(name) {
-  return Object.keys(products).find((key) => products[key].name === name);
+export async function getById(id) {
+  return Product.findOne({ where: { id } });
 }
 
-export function create(category, name, flavour, price, stock, url) {
-  const id = Date.now().toString();
-  const product = {
-    id,
-    category,
-    name,
-    flavour,
-    price,
-    stock,
-    url,
-  };
-  products[id] = product;
-  return product;
+export async function create(category, name, flavour, price, stock, url) {
+  return Product.create({ category, name, flavour, price, stock, url }) //
+    .then((data) => this.getById(data.dataValues.id));
 }
 
-export function update(id, category, name, flavour, price, stock, url) {
-  const prev = { ...products[id] };
-  const updated = {
-    id: prev.id,
-    category: category || prev.category,
-    name: name || prev.name,
-    flavour: flavour || prev.flavour,
-    price: price || prev.price,
-    stock: stock || prev.stock,
-    url: url || prev.url,
-  };
-  products[id] = updated;
-  return updated;
+export async function update(id, category, name, flavour, price, stock, url) {
+  return Product.findByPk(id) //
+    .then((product) => {
+      product.category = category ?? product.category;
+      product.name = name ?? product.name;
+      product.flavour = flavour ?? product.flavour;
+      product.price = price ?? product.price;
+      product.stock = stock ?? product.stock;
+      product.url = url ?? product.url;
+      return product.save();
+    });
 }
 
-export function remove(id) {
-  delete products[id];
+export async function remove(id) {
+  return Product.findByPk(id) //
+    .then((product) => {
+      product.destroy();
+    });
 }
