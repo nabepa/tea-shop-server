@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import { config } from './config.js';
 import { sequelize } from './db/database.js';
 import productsRouter from './router/products.js';
+import authRouter from './router/auth.js';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(cors());
 app.use(morgan('tiny'));
 
 app.use('/products', productsRouter);
+app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
   res.sendStatus(404);
