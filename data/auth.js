@@ -37,6 +37,10 @@ export async function findByUsername(username) {
   return User.findOne({ where: { username } });
 }
 
+export async function findByEmail(email) {
+  return User.findOne({ where: { email } });
+}
+
 export async function findById(id) {
   return User.findOne({ where: { id } });
 }

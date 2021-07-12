@@ -24,4 +24,7 @@ export const config = {
     password: required('MYSQL_PASSWORD'),
     port: required('DB_PORT'),
   },
+  cors: {
+    allowedOrigin: required('CORS_ALLOW_ORIGIN'),
+  },
 };

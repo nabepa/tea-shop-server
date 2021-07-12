@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import 'express-async-errors';
-import * as userRepository from '../data/auth.js';
 import { config } from '../config.js';
+import * as userRepository from '../data/auth.js';
 
 function createJwtToken(id) {
   return jwt.sign({ id }, config.jwt.secretKey, {
@@ -12,10 +12,15 @@ function createJwtToken(id) {
 
 export async function signup(req, res) {
   const { username, password, name, email, url } = req.body;
-  const found = await userRepository.findByUsername(username);
-  if (found) {
+  const foundById = await userRepository.findByUsername(username);
+  if (foundById) {
     return res.status(409).json({ message: `${username} already exists` });
   }
+  const foundByEmail = await userRepository.findByEmail(email);
+  if (foundByEmail) {
+    return res.status(409).json({ message: `${email} already exists` });
+  }
+
   const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
   const userId = await userRepository.createUser({
     username,
@@ -40,7 +45,7 @@ export async function signin(req, res) {
     return res.status(401).json({ message: 'Invalid username or password' });
   }
   const token = createJwtToken(user.id);
-  res.status.json({ token, username });
+  res.status(200).json({ token, username });
 }
 
 export async function me(req, res) {
