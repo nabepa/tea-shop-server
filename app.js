@@ -10,15 +10,14 @@ import authRouter from './router/auth.js';
 
 const app = express();
 
-// const corsOption = {
-//   origin: config.cors.allowedOrigin,
-//   optionSuccessStatus: 200,
-// };
+const corsOption = {
+  origin: config.cors.allowedOrigin,
+  optionSuccessStatus: 200,
+};
 
 app.use(express.json());
 app.use(helmet());
-// app.use(cors(corsOption));
-app.use(cors());
+app.use(cors(corsOption));
 app.use(morgan('tiny'));
 
 app.use('/products', productsRouter);
@@ -33,6 +32,6 @@ app.use((error, req, res, next) => {
   res.sendStatus(500);
 });
 
-sequelize.sync().then((client) => {
+sequelize.sync().then(() => {
   app.listen(config.db.port);
 });
