@@ -8,10 +8,7 @@ import * as authController from '../controller/auth.js';
 const router = express.Router();
 
 const validateCredential = [
-  body('username')
-    .trim()
-    .isLength({ min: 3 })
-    .withMessage('Username should be at least 3 characters'),
+  body('email').isEmail().normalizeEmail().withMessage('Invalid email'),
   body('password')
     .trim()
     .isLength({ min: 5 })
@@ -22,7 +19,6 @@ const validateCredential = [
 const validateSignup = [
   ...validateCredential,
   body('name').notEmpty().withMessage('Name is missing'),
-  body('email').isEmail().normalizeEmail().withMessage('Invalid email'),
   body('url')
     .isURL()
     .withMessage('Invalid URL')

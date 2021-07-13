@@ -11,8 +11,8 @@ const User = sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
-    username: {
-      type: DataTypes.STRING(45),
+    email: {
+      type: DataTypes.STRING(128),
       allowNull: false,
     },
     password: {
@@ -23,19 +23,11 @@ const User = sequelize.define(
       type: DataTypes.STRING(45),
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING(128),
-      allowNull: false,
-    },
     admin: { type: DataTypes.BOOLEAN, allowNull: false },
     url: DataTypes.TEXT,
   },
   { timestamps: false }
 );
-
-export async function findByUsername(username) {
-  return User.findOne({ where: { username } });
-}
 
 export async function findByEmail(email) {
   return User.findOne({ where: { email } });
