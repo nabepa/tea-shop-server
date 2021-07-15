@@ -1,8 +1,9 @@
 import SQ from 'sequelize';
 import { sequelize } from '../db/database.js';
+import { Cart } from './cart.js';
 const DataTypes = SQ.DataTypes;
 
-const User = sequelize.define(
+export const User = sequelize.define(
   'user',
   {
     id: {
@@ -23,11 +24,12 @@ const User = sequelize.define(
       type: DataTypes.STRING(45),
       allowNull: false,
     },
-    admin: { type: DataTypes.BOOLEAN, allowNull: false },
+    role: { type: DataTypes.INTEGER, allowNull: false },
     url: DataTypes.TEXT,
   },
   { timestamps: false }
 );
+Cart.hasOne(User);
 
 export async function findByEmail(email) {
   return User.findOne({ where: { email } });
@@ -38,5 +40,8 @@ export async function findById(id) {
 }
 
 export async function createUser(user) {
-  return User.create(user).then((data) => data.dataValues.id);
+  const cart = await Cart.create();
+  const created = await User.create(user);
+  cart.setUser(created);
+  return created.dataValues.id;
 }
