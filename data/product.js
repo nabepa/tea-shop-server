@@ -2,7 +2,7 @@ import SQ from 'sequelize';
 import { sequelize } from '../db/database.js';
 const DataTypes = SQ.DataTypes;
 
-const Product = sequelize.define('product', {
+export const Product = sequelize.define('product', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,

@@ -1,4 +1,4 @@
-import * as productRepository from '../data/products.js';
+import * as productRepository from '../data/product.js';
 
 export async function getProducts(req, res) {
   const data = await productRepository.getAll();

@@ -1,7 +1,7 @@
 import express from 'express';
 import 'express-async-errors';
 import { isAdmin } from '../middleware/auth.js';
-import * as productController from '../controller/products.js';
+import * as productController from '../controller/product.js';
 
 const router = express.Router();
 
