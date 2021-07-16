@@ -15,7 +15,7 @@ export const isAuth = async (req, res, next) => {
     if (error) {
       return res.status(401).json(AUTH_ERROR);
     }
-    const user = await userRepository.findById(decoded.id);
+    const user = await userRepository.getById(decoded.id);
     if (!user) {
       return res.status(401).json(AUTH_ERROR);
     }
@@ -37,11 +37,11 @@ export const isAdmin = async (req, res, next) => {
     if (error) {
       return res.status(401).json(AUTH_ERROR);
     }
-    const user = await userRepository.findById(decoded.id);
+    const user = await userRepository.getById(decoded.id);
     if (!user) {
       return res.status(401).json(AUTH_ERROR);
     }
-    if (!user.admin) {
+    if (!user.admin === 2) {
       return res.sendStatus(403);
     }
     req.userId = user.id;

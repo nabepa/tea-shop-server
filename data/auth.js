@@ -31,17 +31,18 @@ export const User = sequelize.define(
 );
 Cart.hasOne(User);
 
-export async function findByEmail(email) {
+export async function getByEmail(email) {
   return User.findOne({ where: { email } });
 }
 
-export async function findById(id) {
+export async function getById(id) {
   return User.findOne({ where: { id } });
 }
 
-export async function createUser(user) {
-  const cart = await Cart.create();
+export async function create(user) {
   const created = await User.create(user);
+  // Todo:이렇게 상대방한테 억지로 foreign key 같은 것을 만들어주는게 정상적인 방법일까?
+  const cart = await Cart.create({ userId: created.dataValues.id });
   cart.setUser(created);
   return created.dataValues.id;
 }

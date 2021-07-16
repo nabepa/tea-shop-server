@@ -1,5 +1,6 @@
 import SQ from 'sequelize';
 import { sequelize } from '../db/database.js';
+import { Cart } from './cart.js';
 const DataTypes = SQ.DataTypes;
 
 export const Product = sequelize.define('product', {

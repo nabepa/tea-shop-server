@@ -12,14 +12,14 @@ function createJwtToken(id) {
 
 export async function signup(req, res) {
   const { email, password, name, url } = req.body;
-  const found = await userRepository.findByEmail(email);
+  const found = await userRepository.getByEmail(email);
   if (found) {
     return res.status(409).json({ message: `${email} already exists` });
   }
 
   const role = 0;
   const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
-  const userId = await userRepository.createUser({
+  const userId = await userRepository.create({
     email,
     password: hashed,
     name,
@@ -32,7 +32,7 @@ export async function signup(req, res) {
 
 export async function signin(req, res) {
   const { email, password } = req.body;
-  const user = await userRepository.findByEmail(email);
+  const user = await userRepository.getByEmail(email);
   if (!user) {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
@@ -45,7 +45,7 @@ export async function signin(req, res) {
 }
 
 export async function me(req, res) {
-  const user = await userRepository.findById(req.userId);
+  const user = await userRepository.getById(req.userId);
   if (!user) {
     return res.status(404).json({ message: 'User not found' });
   }

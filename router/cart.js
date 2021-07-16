@@ -7,10 +7,7 @@ import * as cartController from '../controller/cart.js';
 
 const router = express.Router();
 
-router.get('/', isAuth, cartController.getCartsOfUser);
 router.get('/:id', isAuth, cartController.getCart);
-router.post('/:productId', isAuth, cartController.createCart);
-router.put('/:id', isAuth, cartController.updateCart);
-router.delete('/:id', isAuth, cartController.removeCart);
+router.post('/:id/:productId', isAuth, cartController.createProduct);
 
 export default router;
