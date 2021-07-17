@@ -22,12 +22,20 @@ export const Cart = sequelize.define(
 );
 Cart.belongsToMany(Product, { through: CartItem });
 
-export async function getById(id) {
+export async function getCart(id) {
   return Cart.findOne({ where: { id } });
 }
 
+export async function getCartItems(cart) {
+  return await cart.getProducts();
+}
+
+export async function getCartItem(cart, productId) {
+  return await cart.getProducts({ where: { id: productId } });
+}
+
 export async function createCartItem(id, productId) {
-  const cart = await this.getById(id);
+  const cart = await this.getCart(id);
   cart.getProducts().then(console.log);
 }
 
