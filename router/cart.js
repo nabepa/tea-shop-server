@@ -8,6 +8,6 @@ import * as cartController from '../controller/cart.js';
 const router = express.Router();
 
 router.get('/:id', isAuth, cartController.getCart);
-router.post('/:id/:productId', isAuth, cartController.createProduct);
+router.post('/:id/:productId', isAuth, cartController.createCartItem);
 
 export default router;

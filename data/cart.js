@@ -26,6 +26,11 @@ export async function getById(id) {
   return Cart.findOne({ where: { id } });
 }
 
+export async function createCartItem(id, productId) {
+  const cart = await this.getById(id);
+  cart.getProducts().then(console.log);
+}
+
 // Model {
 //   _customGetters: {},
 //   _customSetters: {},

@@ -10,4 +10,10 @@ export async function getCart(req, res) {
   }
 }
 
-export async function createProduct(req, res) {}
+export async function createCartItem(req, res) {
+  const id = req.params.id;
+  const productId = req.params.productId;
+  const cartItem = await cartRepository.createCartItem(id, productId);
+  res.sendStatus(200);
+  // res.json(cartItem);
+}
