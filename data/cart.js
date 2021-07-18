@@ -2,7 +2,9 @@ import SQ from 'sequelize';
 import { sequelize } from '../db/database.js';
 import { Product } from './product.js';
 import { CartItem } from './cartItem.js';
+import { raw } from 'express';
 const DataTypes = SQ.DataTypes;
+const Sequelize = SQ.Sequelize;
 
 export const Cart = sequelize.define(
   'cart',
@@ -31,7 +33,18 @@ export async function getCartItems(cart) {
 }
 
 export async function getCartItem(cart, productId) {
-  return await cart.getProducts({ where: { id: productId } });
+  // const item = await cart.getProducts({ where: { id: productId } });
+  // const item = await cart.getProducts({ where: { id: productId }, raw: true });
+  // const item = await cart.getProducts({
+  //   where: { id: productId },
+  //   attributes: ['id', [Sequelize.col('cartItem.quantity'), 'quantity']],
+  //   raw: true,
+  // });
+  const item = await Cart.findAll({
+    where: { id: productId },
+    include: ProductItem,
+  });
+  return item;
 }
 
 export async function createCartItem(id, productId) {

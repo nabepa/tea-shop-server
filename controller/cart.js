@@ -32,6 +32,7 @@ export async function getCartItem(req, res) {
     res.status(404).json({ message: `Cart(id:${id}) not found` });
   }
   const cartItem = await cartRepository.getCartItem(cart, productId);
+  // console.log(cartItem);
   if (cartItem.length) {
     res.status(200).json(cartItem);
   } else {

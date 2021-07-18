@@ -7,8 +7,8 @@ import * as cartController from '../controller/cart.js';
 
 const router = express.Router();
 
-router.get('/:id', isAuth, cartController.getCartItems);
-router.get('/:id/:productId', isAuth, cartController.getCartItem);
-router.post('/:id/:productId', isAuth, cartController.createCartItem);
+router.get('/:id/items', isAuth, cartController.getCartItems);
+router.get('/:id/items/:productId', isAuth, cartController.getCartItem);
+router.post('/:id/items/:productId', isAuth, cartController.createCartItem);
 
 export default router;
